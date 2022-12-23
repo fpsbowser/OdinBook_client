@@ -1,24 +1,43 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Home from './components/Home';
+import Login from './components/Login';
 
 function App() {
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [user, setUser] = useState({});
+
+  const URI = 'http://localhost:4000/api/';
+
+  // Chnage to check if user exists/logged in
+  function getData() {
+    fetch(URI, { mode: 'cors' })
+      .then((res) => res.json())
+      .then(
+        (result) => {
+          // setUser(result);
+          console.log(result);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  // if (userLoggedIn) {
+  //   return <Home user={user} />;
+  // } else {
+  //   return <Login setUser={setUser} setUserLoggedIn={setUserLoggedIn} />;
+  // }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path='/' element={<Home />} />
+    </Routes>
   );
 }
 
