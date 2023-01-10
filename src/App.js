@@ -1,43 +1,64 @@
 import { useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
+import Loading from './components/Loading';
 import Login from './components/Login';
+import Signup from './components/Signup';
+import authService from './services/auth.service';
+import ProfileDetail from './components/ProfileDetail';
+import Nav from './components/Nav';
+import Error from './components/Error';
 
 function App() {
-  const [userLoggedIn, setUserLoggedIn] = useState(false);
-  const [user, setUser] = useState({});
-
-  const URI = 'http://localhost:4000/api/';
-
-  // Chnage to check if user exists/logged in
-  function getData() {
-    fetch(URI, { mode: 'cors' })
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          // setUser(result);
-          console.log(result);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }
+  const [user, setUser] = useState();
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getData();
+    // Checks localstorage for user
+    fetchUser();
   }, []);
 
-  // if (userLoggedIn) {
-  //   return <Home user={user} />;
-  // } else {
-  //   return <Login setUser={setUser} setUserLoggedIn={setUserLoggedIn} />;
-  // }
+  const fetchUser = async () => {
+    try {
+      const user = await authService.getCurrentUser();
+      setUser(user);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  function handlelogout() {
+    authService.logout();
+    setUser(null);
+  }
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
-    <Routes>
-      <Route path='/' element={<Home />} />
-    </Routes>
+    <>
+      <Nav user={user} />
+      <Routes>
+        <Route
+          path='/'
+          element={<Home user={user} handlelogout={handlelogout} />}
+        />
+        <Route
+          path='/login'
+          element={<Login user={user} setUser={setUser} />}
+        />
+        <Route path='/error' element={<Error error={error} />} />
+        <Route path='/signup' element={<Signup />} />
+        <Route
+          path='/profile/:userid'
+          element={<ProfileDetail user={user} />}
+        />
+      </Routes>
+    </>
   );
 }
 
