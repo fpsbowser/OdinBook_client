@@ -15,9 +15,19 @@ const signup = async (email, password, firstname, lastname) => {
     .post(API_URI + '/signup', { email, password, firstname, lastname })
     .then((res) => {
       console.log(res.data);
+      return res.data;
+      // if sucess login newly created user?
     });
 };
 
-const authService = { login, signup };
+const logout = () => {
+  localStorage.removeItem('user');
+};
+
+const getCurrentUser = async () => {
+  return JSON.parse(localStorage.getItem('user'));
+};
+
+const authService = { login, signup, logout, getCurrentUser };
 
 export default authService;
