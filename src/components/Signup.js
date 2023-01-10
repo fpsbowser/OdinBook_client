@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import authService from '../services/auth.service';
 
 function Signup(props) {
@@ -32,7 +33,7 @@ function Signup(props) {
         firstname,
         lastname
       );
-      // console.log(user);
+      console.log(user);
       // if (user.success) {
       //   console.log('User successfully logged in- proceed to home');
       //   props.setUser(user);
@@ -50,10 +51,10 @@ function Signup(props) {
       <div className='login-container'>
         <div className='logo-container'>
           {/* <img src={require('../assets/bird.png')} alt='logo' id='login-logo' /> */}
-          <h1>Twotter!</h1>
+          <h1>Signup</h1>
         </div>
 
-        <h1>Login</h1>
+        <h1>Signup Form</h1>
         <form onSubmit={onSubmit} className='login-form'>
           <label id='email-label'>
             Email:
@@ -76,10 +77,12 @@ function Signup(props) {
             <input type='lastname' value={lastname} onChange={handleLastname} />
           </label>
           <button type='submit' id='login-btn'>
-            LOGIN
+            SUBMIT
           </button>
         </form>
-        <button id='signup-btn'>Create New Account</button>
+        <Link to={'/login'}>
+          <button id='signup-btn'>Already have an account?</button>
+        </Link>
       </div>
     </div>
   );
