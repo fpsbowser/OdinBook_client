@@ -8,6 +8,7 @@ import authService from './services/auth.service';
 import ProfileDetail from './components/ProfileDetail';
 import Nav from './components/Nav';
 import Error from './components/Error';
+import PostDetail from './components/PostDetail';
 
 function App() {
   const [user, setUser] = useState();
@@ -56,6 +57,10 @@ function App() {
         <Route
           path='/profile/:userid'
           element={<ProfileDetail user={user} />}
+        />
+        <Route
+          path='/profile/:userid/posts/:postid'
+          element={<PostDetail user={user} />}
         />
       </Routes>
     </>
