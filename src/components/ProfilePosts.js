@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function ProfilePosts(props) {
   const { posts, user } = props;
@@ -17,7 +18,18 @@ function ProfilePosts(props) {
       <div className='profile-posts-container'>
         <h2>{name} posts:</h2>
         {posts.map((post) => {
-          return <p key={post._id}>{post.post}</p>;
+          return (
+            <Link
+              to={`/profile/${post.owner._id}/posts/${post._id}`}
+              key={post._id}
+            >
+              <div className='profile-post'>
+                <p className='post-text'>{post.post}</p>
+                <p>Likes: {post.likes.length}</p>
+                <p>Comments: {post.comments.length}</p>
+              </div>
+            </Link>
+          );
         })}
       </div>
     );
