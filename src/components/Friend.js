@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Friend(props) {
   const { friends } = props;
@@ -9,9 +10,18 @@ function Friend(props) {
     return (
       <div className='friends-container'>
         <h2>Friends</h2>
-        {friends.map((ele) => {
-          // friend component card???
-          return <h1 key={ele}> id: {ele}</h1>;
+        {friends.map((friend) => {
+          return (
+            <Link to={`/profile/${friend._id}`} key={friend._id}>
+              <div className='friend-card'>
+                <div className='name-container'>
+                  <h1 className='name-text'>
+                    {friend.name.first} {friend.name.last}
+                  </h1>
+                </div>
+              </div>
+            </Link>
+          );
         })}
       </div>
     );
