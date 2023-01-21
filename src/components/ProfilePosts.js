@@ -5,22 +5,19 @@ function ProfilePosts(props) {
   const { posts, user } = props;
   let name = '';
 
-  console.log(posts);
-  console.log(user);
   if (posts.length === 0) {
     return <h1>No posts!</h1>;
   } else {
-    posts[0].owner !== user._id
+    posts[0].owner === user.id
       ? (name = 'Your')
-      : (name = `${user.name.first}'s`);
-    console.log(name);
+      : (name = `${posts[0].owner.name.first}'s`);
     return (
       <div className='profile-posts-container'>
         <h2>{name} posts:</h2>
         {posts.map((post) => {
           return (
             <Link
-              to={`/profile/${post.owner._id}/posts/${post._id}`}
+              to={`/profile/${post.owner}/posts/${post._id}`}
               key={post._id}
             >
               <div className='profile-post'>
