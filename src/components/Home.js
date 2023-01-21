@@ -5,6 +5,7 @@ import Loading from './Loading';
 import Profile from './Profile';
 import Post from './Post';
 import Error from './Error';
+import PostCompose from './PostCompose';
 
 function Home(props) {
   const { user, handlelogout } = props;
@@ -28,6 +29,7 @@ function Home(props) {
         arr.push(res.data[key]);
       });
       setPosts(arr);
+      // console.log(arr);
     } catch (err) {
       setError(err);
     } finally {
@@ -50,6 +52,9 @@ function Home(props) {
     <div>
       <h1>Home</h1>
       <div className='posts-container'>
+        <div className='compose-post-container'>
+          <PostCompose user={user} fetchPosts={fetchPosts} />
+        </div>
         {posts.map((post) => {
           return <Post post={post} user={user} key={post._id} />;
         })}
