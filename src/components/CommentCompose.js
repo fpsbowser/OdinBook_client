@@ -4,9 +4,8 @@ import { useParams } from 'react-router-dom';
 import Loading from './Loading';
 
 function CommentCompose(props) {
-  const { user } = props;
+  const { user, fetchPostComments } = props;
   const [componentShown, setComponentShown] = useState(false);
-  const [commentText, setCommentText] = useState('');
   const [comment, setComment] = useState({
     comment: '',
     owner: user.id,
@@ -23,12 +22,6 @@ function CommentCompose(props) {
 
   async function onSubmit(e) {
     e.preventDefault();
-    // setComment({
-    //   comment: commentText,
-    //   owner: user.id,
-    //   likes: [],
-    //   timestamp: new Date(),
-    // });
 
     const headers = {
       'content-type': 'application/json',
@@ -43,6 +36,11 @@ function CommentCompose(props) {
         data: comment,
       });
       console.log(res);
+      if (res.data.message === 'Success') {
+        // Refresh comments
+        fetchPostComments();
+        setComponentShown(false);
+      }
       if (res.data.errors) {
         const errors = res.data.errors;
         console.log('Backend validation errors exist: ');
@@ -86,9 +84,9 @@ function CommentCompose(props) {
                 maxLength={'160'}
                 value={comment.comment}
                 onChange={handleChange}
-                placeholder={'surely your twot will be necessary, right?'}
+                placeholder={'comment'}
               ></textarea>
-              <button id='tweet-submit' type='submit'>
+              <button id='comment-submit-btn' type='submit'>
                 Submit
               </button>
             </form>
