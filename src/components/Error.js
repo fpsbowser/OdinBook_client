@@ -33,10 +33,7 @@ function Error(props) {
     }
     return (
       <div className='error-container'>
-        <h2>Error: {error.message}</h2>
-        <p className='error-message'>
-          Please make sure the user ID is correct!
-        </p>
+        <h2 className='error-message'>Error: {error.message}</h2>
       </div>
     );
   }
