@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Loading from './Loading';
 import Comment from './Comment';
 import Error from './Error';
 import { Link } from 'react-router-dom';
+import CommentCompose from './CommentCompose';
 
 function PostDetail(props) {
   const { user } = props;
@@ -15,6 +16,8 @@ function PostDetail(props) {
   const [error, setError] = useState(null);
   const [postLoading, setPostLoading] = useState(true);
   const [commentsLoading, setCommentsLoading] = useState(true);
+  const [isOwner, setIsOwner] = useState(false);
+  const [redirectUser, setRedirectUser] = useState(false);
   const { postid } = useParams();
 
   useEffect(() => {
@@ -30,9 +33,10 @@ function PostDetail(props) {
         headers: { Authorization: user.token },
       });
       if (res.data.error) {
-        console.log('yeet');
-        setError(res.data.error);
+        console.log('error fecthing post detail');
+        return setError(res.data.error);
       }
+      res.data.owner._id === user.id ? setIsOwner(true) : setIsOwner(false);
       setPostDetail(res.data);
       setLikes(res.data.likes);
     } catch (err) {
@@ -51,19 +55,41 @@ function PostDetail(props) {
         }
       );
       if (res.data.error) {
-        setError(res.data.error);
+        setError(res.data);
       }
       setComments(res.data);
     } catch (err) {
+      console.log(`error fetching comments: ${err}`);
       setError(err);
     } finally {
       setCommentsLoading(false);
     }
   };
-  console.log(postDetail);
+  //   console.log(postDetail);
+  async function handledelete() {
+    console.log(`remove post with id: ${postDetail._id}`);
+    try {
+      const res = await axios({
+        method: 'delete',
+        url: `http://localhost:4000/api/posts/${postDetail._id}`,
+        headers: { Authorization: user.token },
+      });
+      if (res.status === 200) {
+        // Redirect user
+        setRedirectUser(!redirectUser);
+      }
+    } catch (error) {
+      setError(error);
+      console.log(error);
+    }
+  }
 
   if (error) {
     return <Error error={error} />;
+  }
+
+  if (redirectUser) {
+    return <Navigate to={`/profile/${user.id}`} />;
   }
 
   return (
@@ -83,13 +109,20 @@ function PostDetail(props) {
           <div className='post-container'>
             <p className='post-text'>{postDetail.post}</p>
           </div>
+          <div className='modify-post-container'>
+            {!isOwner ? null : (
+              <button className='post-delete-btn' onClick={handledelete}>
+                Delete
+              </button>
+            )}
+          </div>
           <div className='likers-container' id='likers-container'>
             <p
               onClick={() => {
                 setPostLikesVisable(!postLikesVisable);
               }}
             >
-              Likes [eye-icon]
+              {likes.length} Likes [eye-icon]
             </p>
             <ul>
               {!postLikesVisable
@@ -111,10 +144,20 @@ function PostDetail(props) {
         <Loading />
       ) : (
         <div className='comment-container'>
-          <h2>comments</h2>
-          {comments.map((comment) => {
-            return <Comment key={comment._id} comment={comment} />;
-          })}
+          <div className='comments'>
+            <h2>comments</h2>
+            {comments.map((comment) => {
+              return (
+                <Comment
+                  key={comment._id}
+                  comment={comment}
+                  user={user}
+                  fetchPostComments={fetchPostComments}
+                />
+              );
+            })}
+          </div>
+          <CommentCompose user={user} fetchPostComments={fetchPostComments} />
         </div>
       )}
     </div>
@@ -122,32 +165,3 @@ function PostDetail(props) {
 }
 
 export default PostDetail;
-
-// useEffect(() => {
-//   fetchPostDetail();
-// }, []);
-
-// const fetchPostDetail = async () => {
-//   try {
-//     const res = await axios(`http://localhost:4000/api/comments/${post._id}`, {
-//       headers: { Authorization: user.token },
-//     });
-//     setPostDetail(res.data);
-//   } catch (err) {
-//     setError(err);
-//   } finally {
-//     setPostLoading(false);
-//   }
-// };
-// //   console.log(props.post);
-
-// if (loading) {
-//   return <Loading />;
-// }
-
-// return (
-//   <div className='post'>
-//     {<h1>Owner: {post.owner.name.first}</h1>}
-//     <p>{post.post}</p>
-//   </div>
-// );
