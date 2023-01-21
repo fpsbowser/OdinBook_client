@@ -1,9 +1,50 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 function Comment(props) {
-  const { comment } = props;
+  const { comment, user, fetchPostComments } = props;
   const [commentLikesVisable, setCommentLikesVisable] = useState(false);
+  const [likes, setLikes] = useState(0);
+  const { postid } = useParams();
+
+  async function handlelike(e) {
+    // update comment to add user.id to likes array
+    try {
+      const res = await axios({
+        method: 'put',
+        url: `http://localhost:4000/api/posts/${postid}/comments/${comment._id}/likes`,
+        data: {
+          user: user.id,
+        },
+      });
+      if (res.status === 200) {
+        // update comments
+        fetchPostComments();
+      }
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function handledelete() {
+    console.log('Delete comment with id: ' + comment._id);
+    try {
+      const res = await axios({
+        method: 'delete',
+        url: `http://localhost:4000/api/posts/${postid}/comments/${comment._id}`,
+        headers: { Authorization: user.token },
+      });
+      if (res.status === 200) {
+        // update comments
+        fetchPostComments();
+      }
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   console.log(comment);
   return (
@@ -16,6 +57,9 @@ function Comment(props) {
           </h2>
         </Link>
         <p className='comment-text'>{comment.comment}</p>
+        <p className='comment-like-btn' onClick={handlelike}>
+          [like-btn-placeholder]
+        </p>
         <p
           className='comment-likes'
           onClick={() => {
@@ -38,6 +82,13 @@ function Comment(props) {
                   );
                 })}
           </ul>
+        </div>
+        <div className='modify-comment-container'>
+          {comment.owner._id !== user.id ? null : (
+            <button className='comment-delete-btn' onClick={handledelete}>
+              Delete Comment
+            </button>
+          )}
         </div>
       </div>
     </div>
