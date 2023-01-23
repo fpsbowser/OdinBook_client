@@ -17,7 +17,7 @@ function ProfilePosts(props) {
         {posts.map((post) => {
           return (
             <Link
-              to={`/profile/${post.owner}/posts/${post._id}`}
+              to={`/profile/${post.owner._id}/posts/${post._id}`}
               key={post._id}
             >
               <div className='profile-post'>
