@@ -46,6 +46,8 @@ function PostDetail(props) {
     }
   };
 
+  //   console.table(postDetail);
+  //   console.log(postDetail.likes);
   const fetchPostComments = async () => {
     try {
       const res = await axios(
@@ -84,6 +86,28 @@ function PostDetail(props) {
     }
   }
 
+  async function handlelike(e) {
+    // update post to add user.id to likes array
+    try {
+      const res = await axios({
+        method: 'put',
+        url: `http://localhost:4000/api/posts/${postid}`,
+        data: {
+          post: postDetail.post,
+          like: user.id,
+        },
+        headers: { Authorization: user.token },
+      });
+      if (res.status === 200) {
+        // update comments
+        fetchPostDetail();
+      }
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   if (error) {
     return <Error error={error} />;
   }
@@ -116,14 +140,20 @@ function PostDetail(props) {
               </button>
             )}
           </div>
-          <div className='likers-container' id='likers-container'>
+          <div className='post-likes-info'>
             <p
+              className='post-likes'
               onClick={() => {
                 setPostLikesVisable(!postLikesVisable);
               }}
             >
-              {likes.length} Likes [eye-icon]
+              LIKES: {postDetail.likes.length} [eye-icon-to-view-likes]
             </p>
+            <p className='post-like-btn' onClick={handlelike}>
+              [like-btn-placeholder]
+            </p>
+          </div>
+          <div className='likers-container' id='likers-container'>
             <ul>
               {!postLikesVisable
                 ? null
