@@ -13,10 +13,12 @@ function Comment(props) {
     try {
       const res = await axios({
         method: 'put',
-        url: `http://localhost:4000/api/posts/${postid}/comments/${comment._id}/likes`,
+        url: `http://localhost:4000/api/posts/${postid}/comments/${comment._id}`,
         data: {
-          user: user.id,
+          comment: comment.comment,
+          like: user.id,
         },
+        headers: { Authorization: user.token },
       });
       if (res.status === 200) {
         // update comments
@@ -46,49 +48,53 @@ function Comment(props) {
     }
   }
 
-  console.log(comment);
+  //   console.log(comment);
   return (
     <div className='comment-container'>
-      <div className='comment-profile'>
-        <p>[logo-placeholder]</p>
+      <div className='comment-owner-header'>
+        <p>[user-logo-placeholder]</p>
         <Link to={`/profile/${comment.owner._id}`}>
-          <h2 className='profile-text'>
+          <h2 className='owner-header-text'>
             {comment.owner.name.first} {comment.owner.name.last}
           </h2>
         </Link>
-        <p className='comment-text'>{comment.comment}</p>
-        <p className='comment-like-btn' onClick={handlelike}>
-          [like-btn-placeholder]
-        </p>
-        <p
-          className='comment-likes'
-          onClick={() => {
-            setCommentLikesVisable(!commentLikesVisable);
-          }}
-        >
-          LIKES: {comment.likes.length} eye-icon to view likers
-        </p>
-        <div className='likers-container' id='likers-container'>
-          <ul>
-            {!commentLikesVisable
-              ? null
-              : comment.likes.map((like) => {
-                  return (
-                    <Link to={`/profile/${like._id}`} key={like._id}>
-                      <li>
-                        {like.name.first} {like.name.last}
-                      </li>
-                    </Link>
-                  );
-                })}
-          </ul>
-        </div>
-        <div className='modify-comment-container'>
-          {comment.owner._id !== user.id ? null : (
-            <button className='comment-delete-btn' onClick={handledelete}>
-              Delete Comment
-            </button>
-          )}
+        <div className='comment-container'>
+          <p className='comment-text'>{comment.comment}</p>
+          <div className='modify-comment-container'>
+            {comment.owner._id !== user.id ? null : (
+              <button className='comment-delete-btn' onClick={handledelete}>
+                Delete Comment
+              </button>
+            )}
+          </div>
+          <div className='comment-likes-info'>
+            <p
+              className='comment-likes'
+              onClick={() => {
+                setCommentLikesVisable(!commentLikesVisable);
+              }}
+            >
+              LIKES: {comment.likes.length} [eye-icon-to-view-likes]
+            </p>
+            <p className='comment-like-btn' onClick={handlelike}>
+              [like-btn-placeholder]
+            </p>
+          </div>
+          <div className='likers-container' id='likers-container'>
+            <ul>
+              {!commentLikesVisable
+                ? null
+                : comment.likes.map((like) => {
+                    return (
+                      <Link to={`/profile/${like._id}`} key={like._id}>
+                        <li>
+                          {like.name.first} {like.name.last}
+                        </li>
+                      </Link>
+                    );
+                  })}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
