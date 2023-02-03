@@ -1,36 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate, useLocation, useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import Loading from './Loading';
-import Friend from './Friend';
-import Requests from './Requests';
+import Followers from './Followers';
 import ProfilePosts from './ProfilePosts';
 import Error from './Error';
+import Following from './Following';
 
 function ProfileDetail(props) {
-  const { user } = props;
+  const { currentUser } = props;
   const [posts, setPosts] = useState([]);
   const [userDetail, setUserDetail] = useState(null);
-  const [friends, setFriends] = useState([]);
+  const [isOwner, setIsOwner] = useState(false);
+  const [following, setFollowing] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [followers, setFollowers] = useState([]);
   const { userid } = useParams();
 
   useEffect(() => {
     fetchUserDetail();
+    if (currentUser) {
+      currentUser.id === userid ? setIsOwner(true) : setIsOwner(false);
+    }
   }, [userid]);
 
   const fetchUserDetail = async () => {
     try {
       const res = await axios(`http://localhost:4000/api/users/${userid}`, {
-        headers: { Authorization: user.token },
+        headers: { Authorization: currentUser.token },
       });
       if (res.data.error) {
-        console.log('yeet');
+        console.log('fetchuser error');
         setError(res.data.error);
       }
       setUserDetail(res.data);
-      setFriends(res.data.friends);
+      setFollowing(res.data.friend_requests);
+      setFollowers(res.data.friends);
       setPosts(res.data.posts);
     } catch (err) {
       setError(err);
@@ -39,7 +45,35 @@ function ProfileDetail(props) {
     }
   };
 
-  console.log(userDetail);
+  async function handleclick() {
+    setLoading(true);
+    try {
+      const res = await axios({
+        method: 'put',
+        url: `http://localhost:4000/api/users/${userid}/requests`,
+        data: {
+          user1: currentUser.id,
+          user2: userid,
+        },
+        headers: { Authorization: currentUser.token },
+      });
+      if (res.status === 200) {
+        // update user
+        console.log(res);
+        fetchUserDetail();
+      }
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (!currentUser) {
+    return <Navigate to={'/login'} />;
+  }
 
   if (loading) {
     return <Loading />;
@@ -49,25 +83,58 @@ function ProfileDetail(props) {
     return <Error error={error} />;
   }
 
-  return (
-    <div className='profile-detail-container'>
-      <div className='friends-container'>
-        <Friend friends={friends} />
+  if (isOwner) {
+    return (
+      <div className='profile-detail-container'>
+        <Following following={following} signedInUser={currentUser} />
+        <Followers followers={followers} signedInUser={currentUser} />
+        <div className='profile-header-container'>
+          <h2>Profile DETAIL CUSTOM NON COMPONENT</h2>
+          <p>[avatar-placeholder]</p>
+          <p>
+            {userDetail.name.first} {userDetail.name.last}
+          </p>
+          <p>{userDetail.email}</p>
+        </div>
+        <div className='profile-posts-container'>
+          <ProfilePosts posts={posts} currentUser={currentUser} />
+        </div>
       </div>
-      <div className='profile-header-container'>
-        <h2>Profile DETAIL</h2>
-        <p>{userDetail.name.first}</p>
-        <p>{userDetail.name.last}</p>
-        <p>{userDetail.email}</p>
+    );
+  } else {
+    return (
+      <div className='profile-detail-container'>
+        <Following following={following} signedInUser={currentUser} />
+        <Followers followers={followers} signedInUser={currentUser} />
+        <div className='profile-header-container'>
+          <h2>Profile DETAIL CUSTOM NON COMPONENT</h2>
+          <p>[avatar-placeholder]</p>
+          <p>
+            {userDetail.name.first} {userDetail.name.last}
+          </p>
+          <p>{userDetail.email}</p>
+          {followers.some((userobj) => userobj._id === currentUser.id) ? (
+            <div className='follow-options'>
+              <p>[following-img]</p>
+              <button onClick={handleclick}>Unfollow</button>
+            </div>
+          ) : (
+            <div className='follow-options'>
+              <button onClick={handleclick}>Follow</button>
+            </div>
+          )}
+          {following.some((user) => user._id === currentUser.id) ? (
+            <div className='follow-status'>
+              <p>following you</p>
+            </div>
+          ) : null}
+        </div>
+        <div className='profile-posts-container'>
+          <ProfilePosts posts={posts} currentUser={currentUser} />
+        </div>
       </div>
-      <div className='profile-posts-container'>
-        <ProfilePosts posts={posts} user={userDetail} />
-      </div>
-      <div className='friend-requests-container'>
-        {userid === user.id ? <Requests user={userDetail} /> : null}
-      </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default ProfileDetail;
