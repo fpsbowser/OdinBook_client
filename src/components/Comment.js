@@ -5,11 +5,10 @@ import axios from 'axios';
 function Comment(props) {
   const { comment, user, fetchPostComments } = props;
   const [commentLikesVisable, setCommentLikesVisable] = useState(false);
-  const [likes, setLikes] = useState(0);
   const { postid } = useParams();
 
   async function handlelike(e) {
-    // update comment to add user.id to likes array
+    // update comment by pushing user.id to likes array
     try {
       const res = await axios({
         method: 'put',
