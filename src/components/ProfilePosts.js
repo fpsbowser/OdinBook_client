@@ -2,13 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function ProfilePosts(props) {
-  const { posts, user } = props;
+  const { posts, currentUser } = props;
   let name = '';
 
   if (posts.length === 0) {
     return <h1>No posts!</h1>;
   } else {
-    posts[0].owner === user.id
+    posts[0].owner === currentUser.id
       ? (name = 'Your')
       : (name = `${posts[0].owner.name.first}'s`);
     return (
