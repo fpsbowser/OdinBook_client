@@ -16,7 +16,7 @@ const signup = async (email, password, firstname, lastname) => {
     .then((res) => {
       console.log(res.data);
       return res.data;
-      // if sucess login newly created user?
+      // if success login newly created user?
     });
 };
 
