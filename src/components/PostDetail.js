@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import CommentCompose from './CommentCompose';
 
 function PostDetail(props) {
-  const { user } = props;
+  const { loggedInUser } = props;
   const [comments, setComments] = useState([]);
   const [postDetail, setPostDetail] = useState(null);
   const [likes, setLikes] = useState([]);
@@ -21,8 +21,10 @@ function PostDetail(props) {
   const { postid } = useParams();
 
   useEffect(() => {
-    fetchPostDetail();
-    fetchPostComments();
+    if (loggedInUser) {
+      fetchPostDetail();
+      fetchPostComments();
+    }
   }, [postid]);
 
   //   console.log(user, postid);
@@ -30,13 +32,15 @@ function PostDetail(props) {
   const fetchPostDetail = async () => {
     try {
       const res = await axios(`http://localhost:4000/api/posts/${postid}`, {
-        headers: { Authorization: user.token },
+        headers: { Authorization: loggedInUser.token },
       });
       if (res.data.error) {
         console.log('error fecthing post detail');
         return setError(res.data.error);
       }
-      res.data.owner._id === user.id ? setIsOwner(true) : setIsOwner(false);
+      res.data.owner._id === loggedInUser.id
+        ? setIsOwner(true)
+        : setIsOwner(false);
       setPostDetail(res.data);
       setLikes(res.data.likes);
     } catch (err) {
@@ -53,7 +57,7 @@ function PostDetail(props) {
       const res = await axios(
         `http://localhost:4000/api/posts/${postid}/comments`,
         {
-          headers: { Authorization: user.token },
+          headers: { Authorization: loggedInUser.token },
         }
       );
       if (res.data.error) {
@@ -74,7 +78,7 @@ function PostDetail(props) {
       const res = await axios({
         method: 'delete',
         url: `http://localhost:4000/api/posts/${postDetail._id}`,
-        headers: { Authorization: user.token },
+        headers: { Authorization: loggedInUser.token },
       });
       if (res.status === 200) {
         // Redirect user
@@ -94,9 +98,9 @@ function PostDetail(props) {
         url: `http://localhost:4000/api/posts/${postid}`,
         data: {
           post: postDetail.post,
-          like: user.id,
+          like: loggedInUser.id,
         },
-        headers: { Authorization: user.token },
+        headers: { Authorization: loggedInUser.token },
       });
       if (res.status === 200) {
         // update comments
@@ -108,12 +112,16 @@ function PostDetail(props) {
     }
   }
 
+  if (!loggedInUser) {
+    return <Navigate to={'/login'} />;
+  }
+
   if (error) {
     return <Error error={error} />;
   }
 
   if (redirectUser) {
-    return <Navigate to={`/profile/${user.id}`} />;
+    return <Navigate to={`/profile/${loggedInUser.id}`} />;
   }
 
   return (
@@ -181,13 +189,16 @@ function PostDetail(props) {
                 <Comment
                   key={comment._id}
                   comment={comment}
-                  user={user}
+                  user={loggedInUser}
                   fetchPostComments={fetchPostComments}
                 />
               );
             })}
           </div>
-          <CommentCompose user={user} fetchPostComments={fetchPostComments} />
+          <CommentCompose
+            user={loggedInUser}
+            fetchPostComments={fetchPostComments}
+          />
         </div>
       )}
     </div>
