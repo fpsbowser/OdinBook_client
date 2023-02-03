@@ -8,7 +8,7 @@ import Error from './Error';
 import PostCompose from './PostCompose';
 
 function Home(props) {
-  const { user, handlelogout } = props;
+  const { loggedInUser } = props;
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -17,12 +17,10 @@ function Home(props) {
     fetchPosts();
   }, []);
 
-  console.log(user);
-  // fetch posts
   const fetchPosts = async () => {
     try {
       const res = await axios('http://localhost:4000/api/posts', {
-        headers: { Authorization: user.token },
+        headers: { Authorization: loggedInUser.token },
       });
       const arr = [];
       Object.keys(res.data).forEach((key) => {
@@ -37,7 +35,7 @@ function Home(props) {
     }
   };
 
-  if (!user) {
+  if (!loggedInUser) {
     return <Navigate to={'/login'} />;
   }
 
@@ -53,14 +51,12 @@ function Home(props) {
       <h1>Home</h1>
       <div className='posts-container'>
         <div className='compose-post-container'>
-          <PostCompose user={user} fetchPosts={fetchPosts} />
+          <PostCompose user={loggedInUser} fetchPosts={fetchPosts} />
         </div>
         {posts.map((post) => {
-          return <Post post={post} user={user} key={post._id} />;
+          return <Post post={post} user={loggedInUser} key={post._id} />;
         })}
       </div>
-      <button onClick={handlelogout}>Logout</button>
-      <Profile user={user} />
     </div>
   );
 }
