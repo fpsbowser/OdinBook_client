@@ -4,16 +4,18 @@ import { Link } from 'react-router-dom';
 function Post(props) {
   const { post } = props;
 
-  console.log(post);
   return (
     <div className='post'>
-      <Link
-        to={`/profile/${post.owner._id}`}
-        // state={{ userid: post.owner._id }}
-      >
-        <h1>Owner: {post.owner.name.first}</h1>
+      <Link to={`/profile/${post.owner._id}`}>
+        <h1>
+          {post.owner.name.first} {post.owner.name.last}
+        </h1>
       </Link>
-      <p>{post.post}</p>
+      <Link to={`/profile/${post.owner._id}/posts/${post._id}`}>
+        <p>{post.post}</p>
+        <p>[likes-logo-placeholder]: {post.likes.length}</p>
+        <p>[comment-logo-placeholder]: {post.comments.length}</p>
+      </Link>
     </div>
   );
 }
