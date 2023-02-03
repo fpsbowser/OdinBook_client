@@ -11,7 +11,7 @@ import Error from './components/Error';
 import PostDetail from './components/PostDetail';
 
 function App() {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -36,17 +36,21 @@ function App() {
     setUser(null);
   }
 
+  if (error) {
+    return <Error error={error} />;
+  }
+
   if (loading) {
     return <Loading />;
   }
 
   return (
     <>
-      <Nav user={user} />
+      <Nav loggedInUser={user} handlelogout={handlelogout} />
       <Routes>
         <Route
           path='/'
-          element={<Home user={user} handlelogout={handlelogout} />}
+          element={<Home loggedInUser={user} handlelogout={handlelogout} />}
         />
         <Route
           path='/login'
@@ -56,11 +60,11 @@ function App() {
         <Route path='/signup' element={<Signup />} />
         <Route
           path='/profile/:userid'
-          element={<ProfileDetail user={user} />}
+          element={<ProfileDetail currentUser={user} />}
         />
         <Route
           path='/profile/:userid/posts/:postid'
-          element={<PostDetail user={user} />}
+          element={<PostDetail loggedInUser={user} />}
         />
       </Routes>
     </>
