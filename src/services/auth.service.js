@@ -19,12 +19,6 @@ const loginAwait = async (email, password) => {
     console.log('ERRRR', error.response);
     return error.response;
   }
-
-  // return axios.post(API_URI + '/login', { email, password }).then((res) => {
-  //   // console.log(res.data);
-  //   localStorage.setItem('user', JSON.stringify(res.data.user));
-  //   return res.data;
-  // });
 };
 
 const signup = async (email, password, firstname, lastname) => {
