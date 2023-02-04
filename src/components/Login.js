@@ -6,6 +6,7 @@ function Login(props) {
   const { user, setUser } = props;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
 
   useEffect(() => {}, []);
 
@@ -20,17 +21,19 @@ function Login(props) {
   async function onSubmit(e) {
     e.preventDefault();
     try {
-      const user = await authService.login(email, password);
-      if (user.success) {
+      const res = await authService.loginAwait(email, password);
+      if (res.success) {
         console.log('User successfully logged in- proceed to home');
-        setUser(user);
+        setUser(res);
         window.location.href = '/';
-      } else {
-        // TODO: Add error handling
-        console.log('User login failed- refresh login with error/errors');
+      }
+
+      if (res.status === 400 || res.status === 401) {
+        setError(res.data.errors);
       }
     } catch (err) {
       console.log(err);
+      setError(err);
     }
   }
 
@@ -68,6 +71,17 @@ function Login(props) {
           <button id='signup-btn'>Create New Account</button>
         </Link>
       </div>
+      {error ? (
+        <div className='error-container'>
+          {error.map((error) => {
+            return (
+              <h2 key={error.msg ? error.msg : error.message}>
+                {error.msg ? error.msg : error.message}
+              </h2>
+            );
+          })}
+        </div>
+      ) : null}
     </div>
   );
 }
