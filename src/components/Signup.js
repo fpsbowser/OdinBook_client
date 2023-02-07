@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 import authService from '../services/auth.service';
 
 function Signup(props) {
+  const { setUser } = props;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
+  const [error, setError] = useState(null);
 
   function handleEmail(e) {
     setEmail(e.target.value);
@@ -33,14 +35,27 @@ function Signup(props) {
         firstname,
         lastname
       );
-      console.log(user);
-      // if (user.success) {
-      //   console.log('User successfully logged in- proceed to home');
-      //   props.setUser(user);
-      //   props.setUserLoggedIn(true);
-      // } else {
-      //   console.log('User login failed- refresh login with error/errors');
-      // }
+
+      if (user.status === 400 || user.status === 401) {
+        setError(user.data.errors);
+      }
+
+      if (user.success) {
+        try {
+          const res = await authService.loginAwait(email, password);
+          if (res.success) {
+            setUser(res);
+            window.location.href = '/';
+          }
+
+          if (res.status === 400 || res.status === 401) {
+            setError(res.data.errors);
+          }
+        } catch (err) {
+          console.log(err);
+          setError(err);
+        }
+      }
     } catch (err) {
       console.log(err);
     }
@@ -84,6 +99,17 @@ function Signup(props) {
           <button id='signup-btn'>Already have an account?</button>
         </Link>
       </div>
+      {error ? (
+        <div className='error-container'>
+          {error.map((error) => {
+            return (
+              <h2 key={error.msg ? error.msg : error.message}>
+                {error.msg ? error.msg : error.message}
+              </h2>
+            );
+          })}
+        </div>
+      ) : null}
     </div>
   );
 }
