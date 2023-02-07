@@ -16,19 +16,31 @@ const loginAwait = async (email, password) => {
       return res.data;
     }
   } catch (error) {
-    console.log('ERRRR', error.response);
+    console.log(error.response);
     return error.response;
   }
 };
 
 const signup = async (email, password, firstname, lastname) => {
-  return axios
-    .post(API_AUTH_URI + '/signup', { email, password, firstname, lastname })
-    .then((res) => {
-      console.log(res.data);
-      return res.data;
-      // if success login newly created user?
+  try {
+    const res = await axios({
+      method: 'post',
+      data: {
+        email,
+        password,
+        firstname,
+        lastname,
+      },
+      url: `${API_AUTH_URI}/signup`,
     });
+    if (res.status === 200) {
+      console.log(res);
+      return res.data;
+    }
+  } catch (error) {
+    console.log(error.response);
+    return error.response;
+  }
 };
 
 const logout = () => {
