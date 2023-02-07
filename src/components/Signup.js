@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import authService from '../services/auth.service';
+import Loading from './Loading';
 
 function Signup(props) {
   const { setUser } = props;
@@ -9,6 +10,7 @@ function Signup(props) {
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   function handleEmail(e) {
     setEmail(e.target.value);
@@ -41,6 +43,7 @@ function Signup(props) {
       }
 
       if (user.success) {
+        setLoading(true);
         try {
           const res = await authService.loginAwait(email, password);
           if (res.success) {
@@ -54,11 +57,19 @@ function Signup(props) {
         } catch (err) {
           console.log(err);
           setError(err);
+        } finally {
+          setLoading(false);
         }
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
+  }
+
+  if (loading) {
+    return <Loading />;
   }
 
   return (

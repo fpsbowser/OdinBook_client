@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import authService from '../services/auth.service';
+import Loading from './Loading';
 
 function Login(props) {
   const { user, setUser } = props;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-
-  useEffect(() => {}, []);
+  const [loading, setLoading] = useState(false);
 
   function handleEmail(e) {
     setEmail(e.target.value);
@@ -20,6 +20,7 @@ function Login(props) {
 
   async function onSubmit(e) {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await authService.loginAwait(email, password);
       if (res.success) {
@@ -34,6 +35,8 @@ function Login(props) {
     } catch (err) {
       console.log(err);
       setError(err);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -43,6 +46,10 @@ function Login(props) {
         <h1>You are already logged in</h1>
       </div>
     );
+  }
+
+  if (loading) {
+    return <Loading />;
   }
 
   return (
