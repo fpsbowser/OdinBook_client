@@ -57,7 +57,7 @@ function App() {
           element={<Login user={user} setUser={setUser} />}
         />
         <Route path='/error' element={<Error error={error} />} />
-        <Route path='/signup' element={<Signup />} />
+        <Route path='/signup' element={<Signup setUser={setUser} />} />
         <Route
           path='/profile/:userid'
           element={<ProfileDetail currentUser={user} />}
