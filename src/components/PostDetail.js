@@ -6,6 +6,9 @@ import Comment from './Comment';
 import Error from './Error';
 import { Link } from 'react-router-dom';
 import CommentCompose from './CommentCompose';
+import Icon from '@mdi/react';
+import { mdiAccountCircle, mdiThumbUp, mdiDelete } from '@mdi/js';
+import '../style/postdetail.css';
 
 function PostDetail(props) {
   const { loggedInUser } = props;
@@ -27,7 +30,12 @@ function PostDetail(props) {
     }
   }, [postid]);
 
-  //   console.log(user, postid);
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
 
   const fetchPostDetail = async () => {
     try {
@@ -50,8 +58,6 @@ function PostDetail(props) {
     }
   };
 
-  //   console.table(postDetail);
-  //   console.log(postDetail.likes);
   const fetchPostComments = async () => {
     try {
       const res = await axios(
@@ -129,76 +135,91 @@ function PostDetail(props) {
       {postLoading ? (
         <Loading />
       ) : (
-        <div className='post-detail-container'>
-          <div className='post-owner-header'>
-            <p>[user-logo-placeholder]</p>
-            <Link to={`/profile/${postDetail.owner._id}`}>
-              <h2 className='owner-header-text'>
-                {postDetail.owner.name.first} {postDetail.owner.name.last}
-              </h2>
-            </Link>
+        <div className='post-container'>
+          <Link
+            to={`/profile/${postDetail.owner._id}`}
+            style={{ textDecoration: 'none' }}
+          >
+            <div className='post-header-container'>
+              <div className='post-header'>
+                <Icon path={mdiAccountCircle} size={1.5} />
+                <h1 className='post-header-text'>
+                  {postDetail.owner.name.first} {postDetail.owner.name.last}
+                </h1>
+              </div>
+              <div className='timestamp-container'>
+                <p className='timestamp-text'>
+                  {new Date(postDetail.timestamp).toLocaleDateString(
+                    'en-US',
+                    options
+                  )}
+                </p>
+              </div>
+            </div>
+          </Link>
+          <p className='post-text'>{postDetail.post}</p>
+          <div className='likes-modify-container'>
+            <div className='likes-container'>
+              <Icon
+                path={mdiThumbUp}
+                size={1}
+                color={'white'}
+                onClick={handlelike}
+              />
+              <p
+                className='postdetail-likes-count'
+                onClick={() => {
+                  setPostLikesVisable(!postLikesVisable);
+                }}
+              >
+                {postDetail.likes.length}
+              </p>
+            </div>
+            <div className='modify-post-container'>
+              {isOwner ? null : (
+                <Icon
+                  path={mdiDelete}
+                  size={1.2}
+                  color='white'
+                  onClick={handledelete}
+                />
+              )}
+            </div>
           </div>
-          <div className='post-container'>
-            <p className='post-text'>{postDetail.post}</p>
-          </div>
-          <div className='modify-post-container'>
-            {!isOwner ? null : (
-              <button className='post-delete-btn' onClick={handledelete}>
-                Delete
-              </button>
-            )}
-          </div>
-          <div className='post-likes-info'>
-            <p
-              className='post-likes'
-              onClick={() => {
-                setPostLikesVisable(!postLikesVisable);
-              }}
-            >
-              LIKES: {postDetail.likes.length} [eye-icon-to-view-likes]
-            </p>
-            <p className='post-like-btn' onClick={handlelike}>
-              [like-btn-placeholder]
-            </p>
-          </div>
-          <div className='likers-container' id='likers-container'>
-            <ul>
-              {!postLikesVisable
-                ? null
-                : likes.map((like) => {
-                    return (
-                      <Link to={`/profile/${like._id}`} key={like._id}>
-                        <li>
-                          {like.name.first} {like.name.last}
-                        </li>
-                      </Link>
-                    );
-                  })}
-            </ul>
+          <div className='likers-container'>
+            {!postLikesVisable
+              ? null
+              : likes.map((like) => {
+                  return (
+                    <Link to={`/profile/${like._id}`} key={like._id}>
+                      <p className='liker-name'>
+                        {like.name.first} {like.name.last}
+                      </p>
+                    </Link>
+                  );
+                })}
           </div>
         </div>
       )}
       {commentsLoading ? (
         <Loading />
       ) : (
-        <div className='comment-container'>
-          <div className='comments'>
-            <h2>comments</h2>
-            {comments.map((comment) => {
-              return (
-                <Comment
-                  key={comment._id}
-                  comment={comment}
-                  user={loggedInUser}
-                  fetchPostComments={fetchPostComments}
-                />
-              );
-            })}
-          </div>
+        <div className='postdetail-comments-container'>
+          <h2 className='postdetail-comment-header'>Comments</h2>
           <CommentCompose
             user={loggedInUser}
             fetchPostComments={fetchPostComments}
           />
+          {comments.map((comment) => {
+            return (
+              <Comment
+                key={comment._id}
+                comment={comment}
+                user={loggedInUser}
+                fetchPostComments={fetchPostComments}
+              />
+            );
+          })}
         </div>
       )}
     </div>

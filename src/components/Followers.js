@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Profile from './Profile';
+import '../style/followers.css';
 
 function Followers(props) {
   // followers is an array of objects with _id vlaue and name object
@@ -30,7 +31,7 @@ function Followers(props) {
           ? null
           : followers.map((follower) => {
               return (
-                <div className='follower-profile' key={follower._id}>
+                <div className='profile-card-container' key={follower._id}>
                   <Profile
                     user={{
                       name: {

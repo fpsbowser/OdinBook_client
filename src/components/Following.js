@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Profile from './Profile';
+import '../style/following.css';
 
 function Following(props) {
   const { following, signedInUser } = props;
@@ -25,18 +26,17 @@ function Following(props) {
           ? null
           : following.map((following) => {
               return (
-                <div className='following-profile' key={following._id}>
-                  <Profile
-                    user={{
-                      name: {
-                        first: following.name.first,
-                        last: following.name.last,
-                      },
-                      id: following._id,
-                    }}
-                    signedInUser={signedInUser}
-                  />
-                </div>
+                <Profile
+                  key={following._id}
+                  user={{
+                    name: {
+                      first: following.name.first,
+                      last: following.name.last,
+                    },
+                    id: following._id,
+                  }}
+                  signedInUser={signedInUser}
+                />
               );
             })}
       </div>

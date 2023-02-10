@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import authService from '../services/auth.service';
 import Loading from './Loading';
+import Icon from '@mdi/react';
+import { mdiBookOpenVariant } from '@mdi/js';
+import '../style/login.css';
 
 function Login(props) {
   const { user, setUser } = props;
@@ -53,42 +56,41 @@ function Login(props) {
   }
 
   return (
-    <div className='main-container'>
-      <div className='login-container'>
-        <div className='logo-container'>
-          {/* <img src={require('../assets/bird.png')} alt='logo' id='login-logo' /> */}
-          <h1>Login</h1>
-        </div>
-
-        <h1>Login Form</h1>
-        <form onSubmit={onSubmit} className='login-form'>
-          <label id='email-label'>
-            Email:
-            <input type='text' value={email} onChange={handleEmail} />
-          </label>
-          <label id='password-label'>
-            Password:
-            <input type='password' value={password} onChange={handlePassword} />
-          </label>
-          <button type='submit' id='login-btn'>
-            LOGIN
-          </button>
-        </form>
-        <Link to={'/signup'}>
-          <button id='signup-btn'>Create New Account</button>
-        </Link>
+    <div className='login-main-container'>
+      <div className='login-logo-container'>
+        <p>ODIN-</p>
+        <Icon path={mdiBookOpenVariant} size={1.5} />
       </div>
+      <form onSubmit={onSubmit} className='login-form'>
+        <h1 className='login-header'>Login</h1>
+        <label id='email-label'>
+          Email:
+          <input type='text' value={email} onChange={handleEmail} />
+        </label>
+        <label id='password-label'>
+          Password:
+          <input type='password' value={password} onChange={handlePassword} />
+        </label>
+        <button type='submit' id='login-btn'>
+          LOGIN
+        </button>
+      </form>
       {error ? (
-        <div className='error-container'>
+        <div className='login-error-container'>
           {error.map((error) => {
             return (
-              <h2 key={error.msg ? error.msg : error.message}>
-                {error.msg ? error.msg : error.message}
-              </h2>
+              <ul key={error.msg ? error.msg : error.message}>
+                <li className='login-error-text'>
+                  {error.msg ? error.msg : error.message}
+                </li>
+              </ul>
             );
           })}
         </div>
       ) : null}
+      <Link to={'/signup'}>
+        <button id='signup-btn'>Create New Account</button>
+      </Link>
     </div>
   );
 }

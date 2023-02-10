@@ -6,6 +6,14 @@ import Followers from './Followers';
 import ProfilePosts from './ProfilePosts';
 import Error from './Error';
 import Following from './Following';
+import {
+  mdiAccountCircle,
+  mdiAccountCheck,
+  mdiAccountRemove,
+  mdiCheckUnderlineCircle,
+} from '@mdi/js';
+import Icon from '@mdi/react';
+import '../style/profiledetail.css';
 
 function ProfileDetail(props) {
   const { currentUser } = props;
@@ -86,52 +94,64 @@ function ProfileDetail(props) {
   if (isOwner) {
     return (
       <div className='profile-detail-container'>
-        <Following following={following} signedInUser={currentUser} />
-        <Followers followers={followers} signedInUser={currentUser} />
         <div className='profile-header-container'>
-          <h2>Profile DETAIL CUSTOM NON COMPONENT</h2>
-          <p>[avatar-placeholder]</p>
-          <p>
-            {userDetail.name.first} {userDetail.name.last}
-          </p>
-          <p>{userDetail.email}</p>
+          <div className='profile-header'>
+            <div className='profile-banner'>
+              <Icon path={mdiAccountCircle} size={2} color='white' />
+              <p className='profile-detail-name-text'>
+                {userDetail.name.first} {userDetail.name.last}
+              </p>
+            </div>
+            <p className='profile-email-text'>{userDetail.email}</p>
+          </div>
         </div>
-        <div className='profile-posts-container'>
-          <ProfilePosts posts={posts} currentUser={currentUser} />
+        <div className='following-followers-container'>
+          <Following following={following} signedInUser={currentUser} />
+          <Followers followers={followers} signedInUser={currentUser} />
         </div>
+        <ProfilePosts posts={posts} currentUser={currentUser} />
       </div>
     );
   } else {
     return (
       <div className='profile-detail-container'>
-        <Following following={following} signedInUser={currentUser} />
-        <Followers followers={followers} signedInUser={currentUser} />
         <div className='profile-header-container'>
-          <h2>Profile DETAIL CUSTOM NON COMPONENT</h2>
-          <p>[avatar-placeholder]</p>
-          <p>
-            {userDetail.name.first} {userDetail.name.last}
-          </p>
-          <p>{userDetail.email}</p>
+          <div className='profile-header'>
+            <div className='profile-banner'>
+              <Icon path={mdiAccountCircle} size={2} color='white' />
+              <p className='profile-detail-name-text'>
+                {userDetail.name.first} {userDetail.name.last}
+              </p>
+            </div>
+            <p className='profile-email-text'>{userDetail.email}</p>
+          </div>
           {followers.some((userobj) => userobj._id === currentUser.id) ? (
             <div className='follow-options'>
-              <p>[following-img]</p>
-              <button onClick={handleclick}>Unfollow</button>
+              <div className='profile-unfollow-btn' onClick={handleclick}>
+                <p>Unfollow</p>
+                <Icon path={mdiAccountRemove} size={1} color='white' />
+              </div>
             </div>
           ) : (
             <div className='follow-options'>
-              <button onClick={handleclick}>Follow</button>
+              <div className='profile-follow-btn' onClick={handleclick}>
+                <p>Follow</p>
+                <Icon path={mdiAccountCheck} size={1} color='white' />
+              </div>
             </div>
           )}
           {following.some((user) => user._id === currentUser.id) ? (
             <div className='follow-status'>
               <p>following you</p>
+              <Icon path={mdiCheckUnderlineCircle} size={1} color='white' />
             </div>
           ) : null}
         </div>
-        <div className='profile-posts-container'>
-          <ProfilePosts posts={posts} currentUser={currentUser} />
+        <div className='following-followers-container'>
+          <Following following={following} signedInUser={currentUser} />
+          <Followers followers={followers} signedInUser={currentUser} />
         </div>
+        <ProfilePosts posts={posts} currentUser={currentUser} />
       </div>
     );
   }

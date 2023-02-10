@@ -2,10 +2,10 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Loading from './Loading';
+import '../style/commentcompose.css';
 
 function CommentCompose(props) {
   const { user, fetchPostComments } = props;
-  const [componentShown, setComponentShown] = useState(false);
   const [comment, setComment] = useState({
     comment: '',
     owner: user.id,
@@ -15,10 +15,6 @@ function CommentCompose(props) {
   const [error, setError] = useState(null);
   const [postRequestLoading, setPostRequestLoading] = useState(false);
   const { postid } = useParams();
-
-  //   useEffect(() => {
-  //     console.log(comment);
-  //   });
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -39,7 +35,10 @@ function CommentCompose(props) {
       if (res.data.message === 'Success') {
         // Refresh comments
         fetchPostComments();
-        setComponentShown(false);
+        setComment({
+          ...comment,
+          comment: '',
+        });
       }
       if (res.data.errors) {
         const errors = res.data.errors;
@@ -65,33 +64,22 @@ function CommentCompose(props) {
 
   return (
     <div className='compose-comment-container'>
-      <p
-        onClick={() => {
-          setComponentShown(!componentShown);
-        }}
-      >
-        [reply-logo-placeholder]
-      </p>
-      {!componentShown ? null : (
-        <div className='comment-textare'>
-          {postRequestLoading ? (
-            <Loading />
-          ) : (
-            <form onSubmit={onSubmit} id='compose-form'>
-              <textarea
-                name='comment'
-                id='comment-textarea'
-                maxLength={'160'}
-                value={comment.comment}
-                onChange={handleChange}
-                placeholder={'comment'}
-              ></textarea>
-              <button id='comment-submit-btn' type='submit'>
-                Submit
-              </button>
-            </form>
-          )}
-        </div>
+      {postRequestLoading ? (
+        <Loading />
+      ) : (
+        <form onSubmit={onSubmit} className='compose-comment-form'>
+          <textarea
+            name='comment'
+            id='comment-textarea'
+            maxLength={'120'}
+            value={comment.comment}
+            onChange={handleChange}
+            placeholder={'Add a comment!'}
+          ></textarea>
+          <button id='comment-submit-btn' type='submit'>
+            Add Comment
+          </button>
+        </form>
       )}
     </div>
   );

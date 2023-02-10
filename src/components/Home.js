@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import axios from 'axios';
 import Loading from './Loading';
-import Profile from './Profile';
 import Post from './Post';
 import Error from './Error';
 import PostCompose from './PostCompose';
+import '../style/home.css';
 
 function Home(props) {
   const { loggedInUser } = props;
@@ -27,7 +27,6 @@ function Home(props) {
         arr.push(res.data[key]);
       });
       setPosts(arr);
-      // console.log(arr);
     } catch (err) {
       setError(err);
     } finally {
@@ -47,16 +46,11 @@ function Home(props) {
     return <Error error={error} />;
   }
   return (
-    <div>
-      <h1>Home</h1>
-      <div className='posts-container'>
-        <div className='compose-post-container'>
-          <PostCompose user={loggedInUser} fetchPosts={fetchPosts} />
-        </div>
-        {posts.map((post) => {
-          return <Post post={post} user={loggedInUser} key={post._id} />;
-        })}
-      </div>
+    <div className='home-container'>
+      <PostCompose user={loggedInUser} fetchPosts={fetchPosts} />
+      {posts.map((post) => {
+        return <Post post={post} user={loggedInUser} key={post._id} />;
+      })}
     </div>
   );
 }

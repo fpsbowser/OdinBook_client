@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { mdiAccountCircle, mdiThumbUp, mdiDelete } from '@mdi/js';
+import Icon from '@mdi/react';
+import '../style/comment.css';
 
 function Comment(props) {
   const { comment, user, fetchPostComments } = props;
   const [commentLikesVisable, setCommentLikesVisable] = useState(false);
   const { postid } = useParams();
+
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
 
   async function handlelike(e) {
     // update comment by pushing user.id to likes array
@@ -50,51 +60,60 @@ function Comment(props) {
   //   console.log(comment);
   return (
     <div className='comment-container'>
-      <div className='comment-owner-header'>
-        <p>[user-logo-placeholder]</p>
+      <div className='comment-header-container'>
         <Link to={`/profile/${comment.owner._id}`}>
-          <h2 className='owner-header-text'>
-            {comment.owner.name.first} {comment.owner.name.last}
-          </h2>
+          <div className='comment-owner-header'>
+            <Icon path={mdiAccountCircle} size={1.5} color='white' />
+            <h2 className='owner-header-text'>
+              {comment.owner.name.first} {comment.owner.name.last}
+            </h2>
+          </div>
         </Link>
-        <div className='comment-container'>
-          <p className='comment-text'>{comment.comment}</p>
-          <div className='modify-comment-container'>
-            {comment.owner._id !== user.id ? null : (
-              <button className='comment-delete-btn' onClick={handledelete}>
-                Delete Comment
-              </button>
-            )}
-          </div>
-          <div className='comment-likes-info'>
-            <p
-              className='comment-likes'
-              onClick={() => {
-                setCommentLikesVisable(!commentLikesVisable);
-              }}
-            >
-              LIKES: {comment.likes.length} [eye-icon-to-view-likes]
-            </p>
-            <p className='comment-like-btn' onClick={handlelike}>
-              [like-btn-placeholder]
-            </p>
-          </div>
-          <div className='likers-container' id='likers-container'>
-            <ul>
-              {!commentLikesVisable
-                ? null
-                : comment.likes.map((like) => {
-                    return (
-                      <Link to={`/profile/${like._id}`} key={like._id}>
-                        <li>
-                          {like.name.first} {like.name.last}
-                        </li>
-                      </Link>
-                    );
-                  })}
-            </ul>
-          </div>
+        <p className='timestamp-text'>
+          {new Date(comment.timestamp).toLocaleDateString('en-US', options)}
+        </p>
+      </div>
+      <p className='comment-text'>{comment.comment}</p>
+      <div className='likes-modify-container'>
+        <div className='likes-container'>
+          <Icon
+            path={mdiThumbUp}
+            size={1}
+            color={'white'}
+            onClick={handlelike}
+          />
+          <p
+            className='postdetail-likes-count'
+            onClick={() => {
+              setCommentLikesVisable(!commentLikesVisable);
+            }}
+          >
+            {comment.likes.length}
+          </p>
         </div>
+        <div className='modify-comment-container'>
+          {comment.owner._id !== user.id ? null : (
+            <Icon
+              path={mdiDelete}
+              size={1.1}
+              color={'white'}
+              onClick={handledelete}
+            />
+          )}
+        </div>
+      </div>
+      <div className='likers-container'>
+        {!commentLikesVisable
+          ? null
+          : comment.likes.map((like) => {
+              return (
+                <Link to={`/profile/${like._id}`} key={like._id}>
+                  <p className='liker-name'>
+                    {like.name.first} {like.name.last}
+                  </p>
+                </Link>
+              );
+            })}
       </div>
     </div>
   );

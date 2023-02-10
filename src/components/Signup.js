@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import authService from '../services/auth.service';
 import Loading from './Loading';
+import Icon from '@mdi/react';
+import { mdiBookOpenVariant } from '@mdi/js';
+import '../style/signup.css';
 
 function Signup(props) {
   const { setUser } = props;
@@ -73,54 +76,53 @@ function Signup(props) {
   }
 
   return (
-    <div className='main-container'>
-      <div className='login-container'>
-        <div className='logo-container'>
-          {/* <img src={require('../assets/bird.png')} alt='logo' id='login-logo' /> */}
-          <h1>Signup</h1>
-        </div>
-
-        <h1>Signup Form</h1>
-        <form onSubmit={onSubmit} className='login-form'>
-          <label id='email-label'>
-            Email:
-            <input type='text' value={email} onChange={handleEmail} />
-          </label>
-          <label id='password-label'>
-            Password:
-            <input type='password' value={password} onChange={handlePassword} />
-          </label>
-          <label id='firstname-label'>
-            First name:
-            <input
-              type='firstname'
-              value={firstname}
-              onChange={handleFirstname}
-            />
-          </label>
-          <label id='lastname-label'>
-            Last name:
-            <input type='lastname' value={lastname} onChange={handleLastname} />
-          </label>
-          <button type='submit' id='login-btn'>
-            SUBMIT
-          </button>
-        </form>
-        <Link to={'/login'}>
-          <button id='signup-btn'>Already have an account?</button>
-        </Link>
+    <div className='signup-main-container'>
+      <div className='signup-logo-container'>
+        <p>ODIN-</p>
+        <Icon path={mdiBookOpenVariant} size={1.5} />
       </div>
+      <form onSubmit={onSubmit} className='signup-form'>
+        <h1 className='signup-header'>Signup</h1>
+        <label id='email-label'>
+          Email:
+          <input type='text' value={email} onChange={handleEmail} />
+        </label>
+        <label id='password-label'>
+          Password:
+          <input type='password' value={password} onChange={handlePassword} />
+        </label>
+        <label id='firstname-label'>
+          First name:
+          <input
+            type='firstname'
+            value={firstname}
+            onChange={handleFirstname}
+          />
+        </label>
+        <label id='lastname-label'>
+          Last name:
+          <input type='lastname' value={lastname} onChange={handleLastname} />
+        </label>
+        <button type='submit' id='signup-btn'>
+          SUBMIT
+        </button>
+      </form>
       {error ? (
-        <div className='error-container'>
+        <div className='signup-error-container'>
           {error.map((error) => {
             return (
-              <h2 key={error.msg ? error.msg : error.message}>
-                {error.msg ? error.msg : error.message}
-              </h2>
+              <ul key={error.msg ? error.msg : error.message}>
+                <li className='signup-error-text'>
+                  {error.msg ? error.msg : error.message}
+                </li>
+              </ul>
             );
           })}
         </div>
       ) : null}
+      <Link to={'/login'}>
+        <button id='signup-btn'>Already have an account?</button>
+      </Link>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Loading from './Loading';
+import '../style/postcompose.css';
 
 function PostCompose(props) {
   const { user, fetchPosts } = props;
@@ -14,8 +15,7 @@ function PostCompose(props) {
   async function onSubmit(e) {
     e.preventDefault();
     setPostRequestLoading(true);
-    // axios post request
-    console.log(`Make POST request with post: ${post.post}`);
+
     const headers = {
       'content-type': 'application/json',
       Authorization: user.token,
@@ -64,21 +64,21 @@ function PostCompose(props) {
   }
 
   return (
-    <div>
+    <div className='compose-post-container'>
       {postRequestLoading ? (
         <Loading />
       ) : (
-        <form onSubmit={onSubmit} id='compose-post-form'>
+        <form onSubmit={onSubmit} className='compose-post-form'>
           <textarea
             name='post'
             id='post-textarea'
-            maxLength={'160'}
+            maxLength={'200'}
             value={post.post}
             onChange={handleChange}
             placeholder={`What's on your mind?`}
           ></textarea>
           <button id='post-submit-btn' type='submit'>
-            Submit
+            Post
           </button>
         </form>
       )}

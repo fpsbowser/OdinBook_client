@@ -3,6 +3,14 @@ import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import Error from './Error';
 import Loading from './Loading';
+import {
+  mdiAccountCircle,
+  mdiAccountCheck,
+  mdiAccountRemove,
+  mdiCheckUnderlineCircle,
+} from '@mdi/js';
+import Icon from '@mdi/react';
+import '../style/profile.css';
 
 function Profile(props) {
   // props will be the user object from App
@@ -91,7 +99,13 @@ function Profile(props) {
   }
 
   if (loading) {
-    return <Loading />;
+    return (
+      <div className='profile-card'>
+        <div className='profile-info-loading'>
+          <Loading />
+        </div>
+      </div>
+    );
   }
 
   if (error) {
@@ -102,11 +116,13 @@ function Profile(props) {
     return (
       <div className='profile-card'>
         <Link to={`/profile/${user.id}`}>
-          <p>[avatar-placeholder]</p>
-          <p>{user.name.first}</p>
-          <p>{user.name.last}</p>
+          <div className='profile-info'>
+            <Icon path={mdiAccountCircle} size={1} color='white' />
+            <p>{user.name.first}</p>
+            <p>{user.name.last}</p>
+          </div>
         </Link>
-        <p>your account</p>
+        <p style={{ fontSize: '.8rem' }}>your account</p>
       </div>
     );
   }
@@ -114,20 +130,29 @@ function Profile(props) {
   return (
     <div className='profile-card'>
       <Link to={`/profile/${user.id}`}>
-        <p>[avatar-placeholder]</p>
-        <p>{user.name.first}</p>
-        <p>{user.name.last}</p>
+        <div className='profile-info'>
+          <Icon path={mdiAccountCircle} size={1} color='white' />
+          <p>{user.name.first}</p>
+          <p>{user.name.last}</p>
+        </div>
       </Link>
       {isFollowing ? (
-        <div className='follow-btn-container'>
-          <button onClick={handleclick}>Unfollow</button>
+        <div className='profilecard-unfollow-btn' onClick={handleclick}>
+          <p>Unfollow</p>
+          <Icon path={mdiAccountRemove} size={1} color='white' />
         </div>
       ) : (
-        <div className='follow-btn-container'>
-          <button onClick={handleclick}>follow</button>
+        <div className='profilecard-follow-btn' onClick={handleclick}>
+          <p>Follow</p>
+          <Icon path={mdiAccountCheck} size={1} color='white' />
         </div>
       )}
-      {isFollowed ? <p>following you</p> : null}
+      {isFollowed ? (
+        <div className='profile-follow-status-container'>
+          <p className='profile-follow-status'>following you</p>
+          <Icon path={mdiCheckUnderlineCircle} size={0.75} color='white' />
+        </div>
+      ) : null}
     </div>
   );
 }
