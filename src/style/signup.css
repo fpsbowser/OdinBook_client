@@ -9,6 +9,10 @@
   margin: 0 auto;
 }
 
+.signup-component {
+  padding-bottom: 5vh;
+}
+
 .signup-logo-container {
   display: flex;
   font-family: 'Caveat', cursive;
