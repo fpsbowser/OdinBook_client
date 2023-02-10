@@ -35,9 +35,12 @@ function ProfileDetail(props) {
 
   const fetchUserDetail = async () => {
     try {
-      const res = await axios(`http://localhost:4000/api/users/${userid}`, {
-        headers: { Authorization: currentUser.token },
-      });
+      const res = await axios(
+        `https://odinbook-api-o1s1.onrender.com/api/users/${userid}`,
+        {
+          headers: { Authorization: currentUser.token },
+        }
+      );
       if (res.data.error) {
         console.log('fetchuser error');
         setError(res.data.error);
@@ -58,7 +61,7 @@ function ProfileDetail(props) {
     try {
       const res = await axios({
         method: 'put',
-        url: `http://localhost:4000/api/users/${userid}/requests`,
+        url: `https://odinbook-api-o1s1.onrender.com/api/users/${userid}/requests`,
         data: {
           user1: currentUser.id,
           user2: userid,

@@ -1,13 +1,11 @@
 import axios from 'axios';
 
-const API_AUTH_URI = 'http://localhost:4000/api/auth';
-
 const loginAwait = async (email, password) => {
   try {
     const res = await axios({
       method: 'post',
       data: { email, password },
-      url: `${API_AUTH_URI}/login`,
+      url: `https://odinbook-api-o1s1.onrender.com/api/auth/login`,
     });
 
     if (res.status === 200) {
@@ -31,7 +29,7 @@ const signup = async (email, password, firstname, lastname) => {
         firstname,
         lastname,
       },
-      url: `${API_AUTH_URI}/signup`,
+      url: `https://odinbook-api-o1s1.onrender.com/api/auth/signup`,
     });
     if (res.status === 200) {
       console.log(res);

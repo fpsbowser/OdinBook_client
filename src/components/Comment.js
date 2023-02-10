@@ -22,7 +22,7 @@ function Comment(props) {
     try {
       const res = await axios({
         method: 'put',
-        url: `http://localhost:4000/api/posts/${postid}/comments/${comment._id}`,
+        url: `https://odinbook-api-o1s1.onrender.com/api//posts/${postid}/comments/${comment._id}`,
         data: {
           comment: comment.comment,
           like: user.id,
@@ -44,7 +44,7 @@ function Comment(props) {
     try {
       const res = await axios({
         method: 'delete',
-        url: `http://localhost:4000/api/posts/${postid}/comments/${comment._id}`,
+        url: `https://odinbook-api-o1s1.onrender.com/api/posts/${postid}/comments/${comment._id}`,
         headers: { Authorization: user.token },
       });
       if (res.status === 200) {

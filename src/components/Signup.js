@@ -76,53 +76,55 @@ function Signup(props) {
   }
 
   return (
-    <div className='signup-main-container'>
-      <div className='signup-logo-container'>
-        <p>ODIN-</p>
-        <Icon path={mdiBookOpenVariant} size={1.5} />
-      </div>
-      <form onSubmit={onSubmit} className='signup-form'>
-        <h1 className='signup-header'>Signup</h1>
-        <label id='email-label'>
-          Email:
-          <input type='text' value={email} onChange={handleEmail} />
-        </label>
-        <label id='password-label'>
-          Password:
-          <input type='password' value={password} onChange={handlePassword} />
-        </label>
-        <label id='firstname-label'>
-          First name:
-          <input
-            type='firstname'
-            value={firstname}
-            onChange={handleFirstname}
-          />
-        </label>
-        <label id='lastname-label'>
-          Last name:
-          <input type='lastname' value={lastname} onChange={handleLastname} />
-        </label>
-        <button type='submit' id='signup-btn'>
-          SUBMIT
-        </button>
-      </form>
-      {error ? (
-        <div className='signup-error-container'>
-          {error.map((error) => {
-            return (
-              <ul key={error.msg ? error.msg : error.message}>
-                <li className='signup-error-text'>
-                  {error.msg ? error.msg : error.message}
-                </li>
-              </ul>
-            );
-          })}
+    <div className='signup-component'>
+      <div className='signup-main-container'>
+        <div className='signup-logo-container'>
+          <p>ODIN-</p>
+          <Icon path={mdiBookOpenVariant} size={1.5} />
         </div>
-      ) : null}
-      <Link to={'/login'}>
-        <button id='signup-btn'>Already have an account?</button>
-      </Link>
+        <form onSubmit={onSubmit} className='signup-form'>
+          <h1 className='signup-header'>Signup</h1>
+          <label id='email-label'>
+            Email:
+            <input type='text' value={email} onChange={handleEmail} />
+          </label>
+          <label id='password-label'>
+            Password:
+            <input type='password' value={password} onChange={handlePassword} />
+          </label>
+          <label id='firstname-label'>
+            First name:
+            <input
+              type='firstname'
+              value={firstname}
+              onChange={handleFirstname}
+            />
+          </label>
+          <label id='lastname-label'>
+            Last name:
+            <input type='lastname' value={lastname} onChange={handleLastname} />
+          </label>
+          <button type='submit' id='signup-btn'>
+            SUBMIT
+          </button>
+        </form>
+        {error ? (
+          <div className='signup-error-container'>
+            {error.map((error) => {
+              return (
+                <ul key={error.msg ? error.msg : error.message}>
+                  <li className='signup-error-text'>
+                    {error.msg ? error.msg : error.message}
+                  </li>
+                </ul>
+              );
+            })}
+          </div>
+        ) : null}
+        <Link to={'/login'}>
+          <button id='signup-btn'>Already have an account?</button>
+        </Link>
+      </div>
     </div>
   );
 }

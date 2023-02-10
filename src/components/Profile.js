@@ -26,7 +26,7 @@ function Profile(props) {
     const fetchFollowing = async () => {
       try {
         const res = await axios(
-          `http://localhost:4000/api/users/${signedInUser.id}/requests`,
+          `https://odinbook-api-o1s1.onrender.com/api/users/${signedInUser.id}/requests`,
           {
             headers: {
               Authorization: signedInUser.token,
@@ -50,7 +50,7 @@ function Profile(props) {
     const fetchFollowers = async () => {
       try {
         const res = await axios(
-          `http://localhost:4000/api/users/${signedInUser.id}/friends`,
+          `https://odinbook-api-o1s1.onrender.com/api/users/${signedInUser.id}/friends`,
           {
             headers: {
               Authorization: signedInUser.token,
@@ -80,7 +80,7 @@ function Profile(props) {
     try {
       const res = await axios({
         method: 'put',
-        url: `http://localhost:4000/api/users/${userid}/requests`,
+        url: `https://odinbook-api-o1s1.onrender.com/api/users/${userid}/requests`,
         data: {
           user1: signedInUser.id,
           user2: user.id,

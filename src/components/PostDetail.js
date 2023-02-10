@@ -39,9 +39,12 @@ function PostDetail(props) {
 
   const fetchPostDetail = async () => {
     try {
-      const res = await axios(`http://localhost:4000/api/posts/${postid}`, {
-        headers: { Authorization: loggedInUser.token },
-      });
+      const res = await axios(
+        `https://odinbook-api-o1s1.onrender.com/api/posts/${postid}`,
+        {
+          headers: { Authorization: loggedInUser.token },
+        }
+      );
       if (res.data.error) {
         console.log('error fecthing post detail');
         return setError(res.data.error);
@@ -61,7 +64,7 @@ function PostDetail(props) {
   const fetchPostComments = async () => {
     try {
       const res = await axios(
-        `http://localhost:4000/api/posts/${postid}/comments`,
+        `https://odinbook-api-o1s1.onrender.com/api/posts/${postid}/comments`,
         {
           headers: { Authorization: loggedInUser.token },
         }
@@ -83,7 +86,7 @@ function PostDetail(props) {
     try {
       const res = await axios({
         method: 'delete',
-        url: `http://localhost:4000/api/posts/${postDetail._id}`,
+        url: `https://odinbook-api-o1s1.onrender.com/api/posts/${postDetail._id}`,
         headers: { Authorization: loggedInUser.token },
       });
       if (res.status === 200) {
@@ -101,7 +104,7 @@ function PostDetail(props) {
     try {
       const res = await axios({
         method: 'put',
-        url: `http://localhost:4000/api/posts/${postid}`,
+        url: `https://odinbook-api-o1s1.onrender.com/api/posts/${postid}`,
         data: {
           post: postDetail.post,
           like: loggedInUser.id,

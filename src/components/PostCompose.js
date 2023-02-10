@@ -24,7 +24,7 @@ function PostCompose(props) {
     try {
       const res = await axios({
         method: 'post',
-        url: `http://localhost:4000/api/posts/`,
+        url: `https://odinbook-api-o1s1.onrender.com/api/posts/`,
         headers: headers,
         data: {
           post: post.post,

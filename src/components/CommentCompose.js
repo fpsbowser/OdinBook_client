@@ -27,7 +27,7 @@ function CommentCompose(props) {
     try {
       const res = await axios({
         method: 'post',
-        url: `http://localhost:4000/api/posts/${postid}/comments`,
+        url: `https://odinbook-api-o1s1.onrender.com/api/posts/${postid}/comments`,
         headers: headers,
         data: comment,
       });

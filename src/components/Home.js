@@ -19,9 +19,12 @@ function Home(props) {
 
   const fetchPosts = async () => {
     try {
-      const res = await axios('http://localhost:4000/api/posts', {
-        headers: { Authorization: loggedInUser.token },
-      });
+      const res = await axios(
+        `https://odinbook-api-o1s1.onrender.com/api/posts`,
+        {
+          headers: { Authorization: loggedInUser.token },
+        }
+      );
       const arr = [];
       Object.keys(res.data).forEach((key) => {
         arr.push(res.data[key]);
