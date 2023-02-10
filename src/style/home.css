@@ -10,4 +10,5 @@
   height: 90vh;
   overflow-y: scroll;
   gap: 1rem;
+  padding-bottom: 1rem;
 }
