@@ -5,11 +5,11 @@
   grid-template-columns: repeat(2, 1fr);
   background-color: black;
   height: 5vh;
-  margin: 0 auto;
-  border-top: 3px solid white;
-  border-right: 3px solid white;
-  border-left: 3px solid white;
-  max-width: 1000px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: sticky;
+  border: 3px solid white;
 }
 
 #text {
