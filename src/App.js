@@ -9,6 +9,8 @@ import ProfileDetail from './components/ProfileDetail';
 import Nav from './components/Nav';
 import Error from './components/Error';
 import PostDetail from './components/PostDetail';
+import './style/app.css';
+import Social from './components/Social';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -67,6 +69,7 @@ function App() {
           element={<PostDetail loggedInUser={user} />}
         />
       </Routes>
+      <Social />
     </>
   );
 }
