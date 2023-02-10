@@ -1,0 +1,58 @@
+@media screen and (max-width: 400px) {
+  .post-header-text {
+    font-size: 1.2rem;
+  }
+  .timestamp-text {
+    font-size: 0.8rem;
+  }
+  .liker-name {
+    font-size: 0.6rem;
+    text-align: center;
+  }
+}
+
+.post-detail-container {
+  margin: 0 auto;
+  border-right: 3px solid white;
+  border-left: 3px solid white;
+  max-width: 1000px;
+  height: 90vh;
+  overflow-y: scroll;
+}
+
+.post-header-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.post-text {
+  text-align: center;
+}
+
+.likes-modify-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1rem 0 1rem;
+  align-items: center;
+}
+
+.postdetail-likes-count {
+  text-decoration: underline;
+}
+
+.likers-container {
+  margin: 0 auto;
+  padding: 0rem 1rem 1rem 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: nowrap;
+  overflow-x: scroll;
+}
+
+.postdetail-comment-header {
+  text-align: center;
+  padding-top: 1rem;
+}

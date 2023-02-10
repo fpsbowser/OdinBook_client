@@ -1,0 +1,45 @@
+@media screen and (max-width: 450px) {
+  .profile-card > div {
+    font-size: 0.6rem;
+    scale: 0.9;
+  }
+  .profile-info {
+    scale: 0.8;
+  }
+}
+
+.profile-card {
+  border: 3px solid white;
+  min-height: 100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+.profile-follow-status-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+  grid-column: span 2;
+}
+
+.profile-follow-status {
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.profilecard-follow-btn,
+.profilecard-unfollow-btn {
+  border: 2px solid white;
+  width: 75%;
+  justify-self: center;
+}
+
+.profilecard-follow-btn:hover,
+.profilecard-unfollow-btn:hover {
+  scale: 1.1;
+}
+
+.profile-info-loading {
+  grid-column: span 2;
+}

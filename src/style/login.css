@@ -1,0 +1,73 @@
+.login-main-container {
+  border: solid 3px white;
+  justify-self: center;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.login-logo-container {
+  display: flex;
+  font-family: 'Caveat', cursive;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 2rem;
+}
+
+.login-header {
+  text-decoration: underline;
+}
+
+.login-form {
+  display: grid;
+  text-align: center;
+  gap: 2rem;
+  width: 100%;
+  border: 3px solid white;
+  padding: 1rem;
+}
+
+.login-error-container {
+  text-align: center;
+}
+
+.login-error-text {
+  color: red;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+#login-btn {
+  justify-self: center;
+  width: 70%;
+  padding: 1rem;
+  background-color: black;
+  border: 2px solid white;
+  font-size: 1.1rem;
+}
+
+#login-btn:hover,
+#signup-btn:hover {
+  background-color: white;
+  color: black;
+  font-weight: 900;
+}
+
+label {
+  text-align: start;
+  font-weight: 900;
+  font-size: 1.2rem;
+}
+
+input {
+  width: 100%;
+  font-size: 1.1rem;
+  height: 2rem;
+  padding: 0.5rem 0 0.5rem 0;
+  color: black;
+  text-align: center;
+}

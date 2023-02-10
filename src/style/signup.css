@@ -1,0 +1,56 @@
+.signup-main-container {
+  border: solid 3px white;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.signup-logo-container {
+  display: flex;
+  font-family: 'Caveat', cursive;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 2rem;
+}
+
+.signup-header {
+  text-decoration: underline;
+}
+
+.signup-form {
+  display: grid;
+  text-align: center;
+  gap: 2rem;
+  width: 100%;
+  border: 3px solid white;
+  padding: 1rem;
+}
+
+.signup-error-container {
+  text-align: center;
+}
+
+.signup-error-text {
+  color: red;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+#login-btn:hover,
+#signup-btn:hover {
+  background-color: white;
+  color: black;
+  font-weight: 900;
+}
+
+#signup-btn {
+  justify-self: center;
+  padding: 1rem;
+  background-color: black;
+  border: 2px solid white;
+  font-size: 1.1rem;
+}

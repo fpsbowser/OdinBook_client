@@ -1,0 +1,29 @@
+@media screen and (max-width: 400px) {
+  .comment-header-container {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.comment-container {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 3px solid white;
+  gap: 1rem;
+}
+
+.comment-text {
+  padding: 0 1rem 0 1rem;
+}
+
+.comment-header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  text-align: center;
+}
+
+.comment-owner-header {
+  display: flex;
+}

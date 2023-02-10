@@ -1,0 +1,29 @@
+.compose-comment-container {
+  padding: 1rem;
+  border-bottom: 3px solid white;
+}
+
+.compose-comment-form {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 0 1rem 0;
+}
+
+#comment-textarea {
+  color: black;
+  text-align: center;
+  min-height: 3rem;
+  padding: 1rem;
+  resize: none;
+}
+
+#comment-submit-btn {
+  padding: 0.5rem;
+  background-color: black;
+  border: 2px solid white;
+  font-size: 1.1rem;
+}
+
+#comment-submit-btn:hover {
+  background-color: rgb(85, 85, 85);
+}

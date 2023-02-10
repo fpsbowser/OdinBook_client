@@ -1,0 +1,9 @@
+.followers-container {
+  width: 50%;
+  max-height: 250px;
+  overflow-x: scroll;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}

@@ -1,0 +1,32 @@
+.social-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-template-columns: repeat(2, 1fr);
+  background-color: black;
+  height: 5vh;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-top: 2px solid white;
+}
+
+#text {
+  color: white;
+  text-align: center;
+}
+
+#logo-github {
+  padding-left: 0.5rem;
+  padding-top: 0.3rem;
+  scale: 0.8;
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: none;
+  color: white;
+}

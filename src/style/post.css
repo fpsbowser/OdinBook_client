@@ -1,0 +1,44 @@
+.post-container {
+  display: flex;
+  flex-direction: column;
+  border-top: 3px solid white;
+  border-bottom: 3px solid white;
+  width: 100%;
+}
+
+.post-header-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  padding: 1rem;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.comment-likes-container {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.likes-container,
+.comments-container {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.timestamp-container {
+  display: flex;
+  justify-self: flex-end;
+  text-align: center;
+}
+
+.post-text {
+  padding: 1rem;
+}
