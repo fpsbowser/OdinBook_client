@@ -17,7 +17,11 @@ function Following(props) {
   }
 
   if (following.length === 0) {
-    return <h3>Following {following.length}</h3>;
+    return (
+      <div className='following-container'>
+        <h3>Following {following.length}</h3>
+      </div>
+    );
   } else {
     return (
       <div className='following-container'>
