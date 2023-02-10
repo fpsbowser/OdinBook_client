@@ -22,7 +22,7 @@ function Comment(props) {
     try {
       const res = await axios({
         method: 'put',
-        url: `https://odinbook-api-o1s1.onrender.com/api//posts/${postid}/comments/${comment._id}`,
+        url: `https://odinbook-api-o1s1.onrender.com/api/posts/${postid}/comments/${comment._id}`,
         data: {
           comment: comment.comment,
           like: user.id,
