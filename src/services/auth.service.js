@@ -5,7 +5,7 @@ const loginAwait = async (email, password) => {
     const res = await axios({
       method: 'post',
       data: { email, password },
-      url: `https://odinbook-api-o1s1.onrender.com/api/auth/login`,
+      url: `https://odinbook-api-ks88.onrender.com/api/auth/login`,
     });
 
     if (res.status === 200) {
@@ -29,7 +29,7 @@ const signup = async (email, password, firstname, lastname) => {
         firstname,
         lastname,
       },
-      url: `https://odinbook-api-o1s1.onrender.com/api/auth/signup`,
+      url: `https://odinbook-api-ks88.onrender.com/api/auth/signup`,
     });
     if (res.status === 200) {
       console.log(res);

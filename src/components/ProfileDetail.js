@@ -36,7 +36,7 @@ function ProfileDetail(props) {
   const fetchUserDetail = async () => {
     try {
       const res = await axios(
-        `https://odinbook-api-o1s1.onrender.com/api/users/${userid}`,
+        `https://odinbook-api-ks88.onrender.com/api/users/${userid}`,
         {
           headers: { Authorization: currentUser.token },
         }
@@ -61,7 +61,7 @@ function ProfileDetail(props) {
     try {
       const res = await axios({
         method: 'put',
-        url: `https://odinbook-api-o1s1.onrender.com/api/users/${userid}/requests`,
+        url: `https://odinbook-api-ks88.onrender.com/api/users/${userid}/requests`,
         data: {
           user1: currentUser.id,
           user2: userid,

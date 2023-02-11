@@ -20,7 +20,7 @@ function Home(props) {
   const fetchPosts = async () => {
     try {
       const res = await axios(
-        `https://odinbook-api-o1s1.onrender.com/api/posts`,
+        `https://odinbook-api-ks88.onrender.com/api/posts`,
         {
           headers: { Authorization: loggedInUser.token },
         }
